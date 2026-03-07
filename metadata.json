@@ -1,0 +1,5 @@
+{
+  "name": "AuthentiCheck: AI vs Human Text Detection",
+  "description": "A modern AI-powered dashboard for identifying AI-generated content with segment-level highlighting, confidence scores, and process visualization.",
+  "requestFramePermissions": []
+}
