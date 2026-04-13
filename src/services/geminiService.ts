@@ -7,32 +7,39 @@ export async function analyzeText(text: string, model: ModelType, sensitivity: n
   const response = await ai.models.generateContent({
     model: "gemini-3.1-pro-preview",
     contents: `You are a world-class Forensic Linguistic Expert specializing in AI-generated text detection. 
-    Your task is to analyze the provided text and determine the likelihood of it being AI-generated versus human-written.
+    Your task is to perform a deep forensic analysis of the provided text to determine if it is AI-generated or human-written.
     
     DETECTION SENSITIVITY: ${sensitivity}% 
     (0% = Very Conservative, only flag if absolutely certain. 100% = Very Strict, flag even subtle patterns).
+    At higher sensitivity, you should be more suspicious of "synthetic perfection".
 
-    CRITERIA FOR ANALYSIS:
-    1. Perplexity: AI text often has lower perplexity (predictability).
-    2. Burstiness: Human writing has high burstiness (varied sentence length and structure). AI is more uniform.
-    3. Syntactic Patterns: AI often uses highly structured, repetitive grammatical patterns.
-    4. Contextual Nuance: Humans use idioms, cultural references, and subtle emotional shifts more naturally.
-    5. Error Patterns: Humans make "natural" typos or stylistic choices; AI errors are often logical or factual.
+    AI FINGERPRINTS TO LOOK FOR:
+    1. Synthetic Perfection: Flawless grammar and syntax that lacks the "messiness" or idiosyncratic rhythm of human thought.
+    2. Low Perplexity: Highly predictable word choices and transitions.
+    3. Low Burstiness: Uniform sentence lengths and structures. AI tends to have a "steady" beat, whereas humans have "bursts" of complexity followed by simplicity.
+    4. Hedging & Transition Overuse: Frequent use of phrases like "It is important to note," "On the other hand," "In conclusion," and "Furthermore" in a way that feels mechanical.
+    5. Lack of Subjective Experience: Absence of genuine personal anecdotes, unique sensory details, or non-obvious emotional connections.
+    6. Neutrality Bias: An overly balanced, objective, or "safe" tone that avoids strong, idiosyncratic opinions or unconventional phrasing.
+
+    HUMAN MARKERS:
+    1. High Burstiness: Unpredictable shifts in sentence complexity.
+    2. Idiosyncratic Voice: Unique metaphors, non-standard but effective grammar, and personal "flair".
+    3. Contextual Deep-Dives: Specific, non-generic references that require deep lived experience.
 
     Analyze the text segment by segment. For each segment, provide:
     - text: The segment content.
-    - isAI: Boolean (true if likely AI).
+    - isAI: Boolean. Be critical. If sensitivity is high, flag segments that show even subtle AI-like "smoothness".
     - confidence: 0-1 score.
-    - explanation: Why you reached this conclusion based on the criteria above.
+    - explanation: A specific forensic reason (e.g., "Shows low burstiness and mechanical transition usage").
 
     Also provide overall metrics (0-1) for:
-    - variability (Burstiness)
-    - coherence (Logical flow)
+    - variability (Burstiness/Sentence variety)
+    - coherence (Logical flow - AI is often 1.0)
     - repetition (Pattern frequency)
     - diversity (Vocabulary range)
 
     And provide the overall percentages:
-    - aiPercentage: 0-100
+    - aiPercentage: 0-100 (Weighted by segment confidence and sensitivity)
     - humanPercentage: 0-100
 
     Text to analyze:

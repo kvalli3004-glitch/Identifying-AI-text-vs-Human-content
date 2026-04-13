@@ -1,5 +1,5 @@
 {
-  "name": "AuthentiCheck: AI vs Human Text Detection",
-  "description": "A modern AI-powered dashboard for identifying AI-generated content with segment-level highlighting, confidence scores, and process visualization.",
+  "name": "Text Marker: AI & Knowledge Evaluation",
+  "description": "Text Marker - Text Evaluation Tool for Marking AI and Real Knowledge-based Entries and Responses.",
   "requestFramePermissions": []
 }

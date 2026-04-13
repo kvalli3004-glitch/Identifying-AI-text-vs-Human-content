@@ -16,7 +16,10 @@ import {
   AlertCircle,
   Info,
   CheckCircle2,
-  Clock
+  Clock,
+  Cpu,
+  Network,
+  Database
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
@@ -145,11 +148,10 @@ export default function App() {
           The Industry Standard
         </span>
         <h1 className="text-6xl md:text-8xl font-black text-slate-900 leading-[0.9] tracking-tighter mb-8">
-          Identifying-AI <br />
-          <span className="text-indigo-600">vs-Human content</span>
+          Text Marker
         </h1>
         <p className="text-xl text-slate-500 mb-10 max-w-xl mx-auto leading-relaxed">
-          The industry standard for AI content verification. Detect GPT-4, Gemini, and Claude patterns with 94% accuracy.
+          Text Evaluation Tool for Marking AI and Real Knowledge-based Entries and Responses.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-4">
           <button 
@@ -258,6 +260,16 @@ export default function App() {
                 )}
               </button>
             </div>
+
+            {inputText.trim().length > 0 && inputText.trim().length < 200 && (
+              <div className="mt-4 p-3 bg-amber-50 border border-amber-100 rounded-xl flex items-center gap-3">
+                <AlertCircle className="text-amber-600" size={16} />
+                <p className="text-[10px] font-bold text-amber-800 uppercase tracking-widest">
+                  Warning: Short text detected. Accuracy is significantly higher with 200+ characters.
+                </p>
+              </div>
+            )}
+
             <div className="flex items-center justify-center gap-2 mt-8 text-slate-400">
               <AlertCircle size={14} />
               <p className="text-[10px] font-bold uppercase tracking-widest">AI detection is probabilistic and may produce false positives. Use as a forensic aid, not absolute proof.</p>
@@ -265,19 +277,30 @@ export default function App() {
           </Card>
 
           {result && (
-            <Card title="Analysis Breakdown">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="space-y-6"
+            >
+              <Card title="Analysis Breakdown">
               <div className="space-y-6">
                 <div className="p-6 bg-slate-50 rounded-2xl font-serif leading-relaxed text-lg">
                   {result.segments.map((seg, i) => (
                     <motion.span
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: i * 0.05 }}
                       key={i}
-                      className={cn(
-                        "inline-block px-1 rounded transition-colors cursor-help group relative",
-                        seg.isAI ? "bg-red-100/50 hover:bg-red-200/50" : "bg-emerald-100/50 hover:bg-emerald-200/50"
-                      )}
+                      initial={{ opacity: 0, y: 4, backgroundColor: "rgba(255, 255, 255, 0)" }}
+                      animate={{ 
+                        opacity: 1, 
+                        y: 0,
+                        backgroundColor: seg.isAI ? "rgba(254, 226, 226, 0.5)" : "rgba(209, 250, 229, 0.5)" 
+                      }}
+                      transition={{ 
+                        duration: 0.4, 
+                        delay: i * 0.06,
+                        ease: [0.21, 0.47, 0.32, 0.98] // Custom cubic-bezier for a premium feel
+                      }}
+                      className="inline-block px-1 rounded transition-colors cursor-help group relative"
                     >
                       {seg.text}{' '}
                       <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-3 bg-slate-900 text-white text-xs rounded-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 shadow-xl">
@@ -292,8 +315,9 @@ export default function App() {
                 </div>
               </div>
             </Card>
-          )}
-        </div>
+          </motion.div>
+        )}
+      </div>
 
         <div className="space-y-8">
           {result ? (
@@ -439,7 +463,7 @@ export default function App() {
             <div className="max-w-2xl text-center">
               <h2 className="text-2xl font-bold text-slate-900 mb-4">How it works</h2>
               <p className="text-slate-500 leading-relaxed">
-                AuthentiCheck uses a parallel processing pipeline. First, text is cleaned and split into segments. 
+                Text Marker uses a parallel processing pipeline. First, text is cleaned and split into segments. 
                 These segments are then tokenized and sent to multiple detection engines (RoBERTa, Gemini, GPT) 
                 simultaneously. The results are aggregated using a weighted ensemble method to minimize false positives.
               </p>
@@ -664,8 +688,8 @@ export default function App() {
             <ShieldCheck size={24} />
           </div>
           <div>
-            <h1 className="text-xl font-black tracking-tighter text-slate-900 uppercase">AuthentiCheck</h1>
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest -mt-1">Text Authenticity Lab</p>
+            <h1 className="text-xl font-black tracking-tighter text-slate-900 uppercase">Text Marker</h1>
+            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest -mt-1">Knowledge Evaluation Tool</p>
           </div>
         </div>
 
@@ -811,7 +835,11 @@ export default function App() {
                             <p className="text-xs font-bold text-indigo-900 uppercase">Tuning Guide</p>
                           </div>
                           <p className="text-[11px] text-indigo-700 leading-relaxed">
-                            Increasing sensitivity will flag more content as AI but may increase false positives. For academic use, we recommend a "Conservative" setting (30-40%).
+                            Increasing sensitivity will flag more content as AI but may increase false positives. 
+                            <br /><br />
+                            <strong>Strict Mode (70%+):</strong> Optimized for high-quality AI text that attempts to mimic human rhythm. It looks for "synthetic perfection" and mechanical transitions.
+                            <br /><br />
+                            <strong>Conservative (30-40%):</strong> Recommended for academic papers and creative writing to avoid false accusations.
                           </p>
                         </div>
 
